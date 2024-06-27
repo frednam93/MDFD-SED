@@ -1,0 +1,978 @@
+CNNConformer:
+  conf_dropout: 0.1
+  conf_norm: layernorm
+  conv_activation: glu
+  conv_dropout: 0.5
+  conv_expansion: 2
+  d_classifier: 512
+  d_model: 144
+  ff_expansion: 4
+  kernel:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  kernel_size: 7
+  n_class: 10
+  n_filt:
+  - 16
+  - 32
+  - 64
+  - 128
+  - 128
+  - 144
+  - 144
+  n_head: 4
+  n_input_ch: 1
+  n_trans_layer: 3
+  pad:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  pooling:
+  - - 2
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 1
+  stride:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+CNNTrans:
+  conv_activation: glu
+  conv_dropout: 0.5
+  d_classifier: 512
+  d_model: 512
+  ff_expansion: 4
+  kernel:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  n_class: 10
+  n_filt:
+  - 16
+  - 32
+  - 64
+  - 128
+  - 256
+  - 512
+  - 512
+  n_head: 16
+  n_input_ch: 1
+  n_trans_layer: 3
+  pad:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  pooling:
+  - - 2
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 1
+  stride:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  trans_dropout: 0.1
+  trans_norm: layernorm
+CRNN:
+  DY_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE2_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  activation: Relu
+  attention: class
+  conv_dropout: 0.5
+  kernel:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  n_RNN_cell: 128
+  n_RNN_layer: 2
+  n_class: 10
+  n_filt:
+  - 16
+  - 32
+  - 64
+  - 128
+  - 128
+  - 128
+  - 128
+  n_input_ch: 1
+  pad:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  pooling:
+  - - 2
+    - 2
+  - - 2
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  rec_dropout: 0
+  resgru: false
+  rnn_norm: false
+  stride:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+Conformer:
+  conv_expansion: 2
+  d_classifier: 512
+  d_model: 144
+  dropout: 0.1
+  ff_expansion: 4
+  input_dim: 128
+  input_dropout: 0.1
+  kernel_size: 7
+  mid_dim_1: null
+  mid_dim_2: null
+  n_class: 10
+  n_head: 4
+  n_input_ch: 1
+  n_layer: 16
+  norm: layernorm
+  pad:
+  - 0
+  - 0
+DYCRNN:
+  DY_layers:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  FE_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  LKA_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE2_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  activation: cg
+  att_se_reduction: null
+  attend_dim: chanfreq
+  attend_dim2: freq_timewise
+  attention: class
+  conv1d_kernel:
+  - 3
+  - 1
+  conv1d_kernel_time:
+  - 3
+  - 1
+  conv_dropout: 0.5
+  dilated_DY:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 0
+  dilation_size:
+  - - 1
+    - 1
+  - - 1
+    - 2
+  - - 1
+    - 3
+  - - 1
+    - 3
+  dtdytype: null
+  dy_reduction: 4
+  fixed_kernel: false
+  freq_encode_lin: false
+  freq_encode_sin: 0
+  kernel:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  n_RNN_cell: 256
+  n_RNN_layer: 2
+  n_basis_kernels: 4
+  n_class: 10
+  n_filt:
+  - 32
+  - 64
+  - 128
+  - 256
+  - 256
+  - 256
+  - 256
+  n_heads:
+  - 8
+  - 8
+  - 8
+  - 8
+  - 8
+  - 8
+  - 8
+  n_input_ch: 1
+  n_transformer_layer: null
+  omni_dy_choice:
+  - false
+  - false
+  - false
+  pad:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  pool_choice: mean
+  pool_dim: time
+  pool_type: mean
+  pooling:
+  - - 2
+    - 2
+  - - 2
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  pre_FE:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  rec_dropout: 0
+  resgru: false
+  rnn_norm: false
+  se2_attend_conv: false
+  se2_reduction: 4
+  se_attend_conv: false
+  se_pool: avg
+  se_reduction: 4
+  smooth_filter: null
+  smooth_type: rect
+  stride:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  temperature: 45
+  timeatt_chanwithfreq: false
+  train_freq_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+DYCRNN_class:
+  CBAM_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  CBAM_reduction: 16
+  DY_layers:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  SE2_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  activation: cg
+  attend_dim: freq_timewise
+  attend_dim2: chan
+  attention: class
+  conv1d_kernel:
+  - 3
+  - 1
+  conv_dropout: 0.5
+  dy_reduction: 4
+  kernel:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  kernel_size: 7
+  n_RNN_cell: 256
+  n_RNN_layer: 2
+  n_basis_kernels: 4
+  n_class: 10
+  n_filt:
+  - 32
+  - 64
+  - 128
+  - 256
+  - 256
+  - 256
+  - 256
+  n_input_ch: 1
+  no_channel: true
+  no_spatial: false
+  pad:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  pool_dim: time
+  pooling:
+  - - 2
+    - 2
+  - - 2
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  rec_dropout: 0
+  resgru: false
+  rnn_norm: false
+  se2_attend_conv: false
+  se2_reduction: 4
+  se_attend_conv: false
+  se_pool: avg
+  se_reduction: 4
+  stride:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  temperature: 45
+DYCRNN_noDY:
+  CBAM_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  CBAM_reduction: 16
+  DY_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE2_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  activation: cg
+  attend_dim: freq_timewise
+  attend_dim2: chan
+  attention: time
+  conv1d_kernel:
+  - 3
+  - 1
+  conv_dropout: 0.5
+  dy_reduction: 4
+  kernel:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  kernel_size: 7
+  n_RNN_cell: 256
+  n_RNN_layer: 2
+  n_basis_kernels: 4
+  n_class: 10
+  n_filt:
+  - 32
+  - 64
+  - 128
+  - 256
+  - 256
+  - 256
+  - 256
+  n_input_ch: 1
+  no_channel: true
+  no_spatial: false
+  pad:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  pool_dim: time
+  pooling:
+  - - 2
+    - 2
+  - - 2
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  rec_dropout: 0
+  resgru: false
+  rnn_norm: false
+  se2_attend_conv: false
+  se2_reduction: 4
+  se_attend_conv: false
+  se_pool: avg
+  se_reduction: 4
+  stride:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  temperature: 45
+DYCRNN_time:
+  CBAM_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  CBAM_reduction: 16
+  DY_layers:
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  SE2_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  SE_layers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  activation: cg
+  attend_dim: freq_timewise
+  attend_dim2: chan
+  attention: time
+  conv1d_kernel:
+  - 3
+  - 1
+  conv_dropout: 0.5
+  dy_reduction: 4
+  kernel:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  kernel_size: 7
+  n_RNN_cell: 256
+  n_RNN_layer: 2
+  n_basis_kernels: 4
+  n_class: 10
+  n_filt:
+  - 32
+  - 64
+  - 128
+  - 256
+  - 256
+  - 256
+  - 256
+  n_input_ch: 1
+  no_channel: true
+  no_spatial: false
+  pad:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  pool_dim: time
+  pooling:
+  - - 2
+    - 2
+  - - 2
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  - - 1
+    - 2
+  rec_dropout: 0
+  resgru: false
+  rnn_norm: false
+  se2_attend_conv: false
+  se2_reduction: 4
+  se_attend_conv: false
+  se_pool: avg
+  se_reduction: 4
+  stride:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  temperature: 45
+ResNet:
+  base_dim: 64
+ResRNN:
+  activ: relu
+  attention: true
+  blocktype: BottleneckBlock
+  conv_dropout: 0.5
+  layers:
+  - 3
+  - 4
+  - 6
+  - 3
+  n_RNN_cell: 256
+  n_RNN_layer: 2
+  n_class: 10
+  n_filt:
+  - 32
+  - 32
+  - 64
+  - 128
+  - 256
+  rec_dropout: 0
+  resgru: true
+  strides:
+  - - 2
+    - 2
+  - - 2
+    - 2
+  - - 2
+    - 2
+  - - 1
+    - 2
+dataset:
+  AudioSet_folder: ../datasets/AudioSet_strong/audio_16k
+  AudioSet_tsv: ../datasets/AudioSet_strong/audioset_train_strong.tsv
+  FSD_folder: ../datasets/dcase2021/dataset/audio/train/FSD50k_16k/
+  FUSS_folder: ../datasets/FUSS/ssdata/*/
+  FUSS_rev_folder: ../datasets/FUSS/ssdata_reverb/*/
+  eval22_dur: ../datasets/evaluation2022/durations.tsv
+  eval22_folder: ../datasets/evaluation2022/eval21_16k/
+  eval22_folder_10s: ../datasets/evaluation2022/eval21_16k_10s/
+  eval22_folder_300s: ../datasets/evaluation2022/eval21_16k_300s/
+  eval22_folder_44k: ../datasets/evaluation2022/eval21/
+  eval_dur: ../datasets/evaluation2022/Ground-truth/eval_durations.tsv
+  eval_folder: ../datasets/evaluation2022/eval21_16k/
+  eval_mapping: ../datasets/evaluation2022/Ground-truth/mapping_file_eval.tsv
+  eval_tsv: ../datasets/evaluation2022/Ground-truth/ground_truth_eval.tsv
+  pubeval_dur: ../datasets/dcase2021/dataset/metadata/eval/public_durations.tsv
+  pubeval_folder: ../datasets/dcase2021/dataset/audio/eval/public_16k/
+  pubeval_folder_44k: ../datasets/dcase2021/dataset/audio/eval/public/
+  pubeval_tsv: ../datasets/dcase2021/dataset/metadata/eval/public.tsv
+  public_dur: ../datasets/evaluation2022/Ground-truth/public_durations.tsv
+  public_folder: ../datasets/evaluation2022/eval21_16k/
+  public_mapping: ../datasets/evaluation2022/Ground-truth/mapping_file_public.tsv
+  public_tsv: ../datasets/evaluation2022/Ground-truth/ground_truth_public.tsv
+  soundbank10s_train: ../datasets/dcase2021/soundbank_train_10s/*/
+  soundbank10s_valid: ../datasets/dcase2021/soundbank_valid_10s/*/
+  strong_real_folder: ../datasets/dcase2021/dataset/audio/train/strong_label_real_16k/
+  synth_eval_dur: ../datasets/evaluation2022/Ground-truth/synth_eval_durations.tsv
+  synth_eval_folder: ../datasets/evaluation2022/eval21_16k/
+  synth_eval_mapping: ../datasets/evaluation2022/Ground-truth/mapping_file_synth.tsv
+  synth_eval_tsv: ../datasets/evaluation2022/Ground-truth/ground_truth_synth_eval.tsv
+  synth_train_tsv: ../datasets/dcase2021/dataset/metadata/train/audioset_strong.tsv
+  test_dur: ../datasets/dcase2021/dataset/metadata/validation/validation_durations.tsv
+  test_folder: ../datasets/dcase2021/dataset/audio/validation/validation_16k/
+  test_folder_44k: ../datasets/dcase2021/dataset/audio/validation/validation/
+  test_tsv: ../datasets/dcase2021/dataset/metadata/validation/validation.tsv
+  unlabeled_folder: ../datasets/dcase2021/dataset/audio/train/unlabel_in_domain_16k/
+  unlabeled_folder_44k: ../datasets/dcase2021/dataset/audio/train/unlabel_in_domain/
+  weak_folder: ../datasets/dcase2021/dataset/audio/train/weak_16k/
+  weak_folder_44k: ../datasets/dcase2021/dataset/audio/train/weak/
+  weak_tsv: ../datasets/dcase2021/dataset/metadata/train/weak.tsv
+dataset_oldsynth:
+  synth_train_dur: ../datasets/dcase2021/dataset/metadata/train/synthetic21_train/durations.tsv
+  synth_train_folder: ../datasets/dcase2021/dataset/audio/train/synthetic21_train/soundscapes_16k/
+  synth_train_folder_44k: ../datasets/dcase2021/dataset/audio/train/synthetic21_train/soundscapes/
+  synth_train_folder_ft: ../datasets/dcase2021/dataset/audio/train/synthetic21_train/soundscapes_ft/
+  synth_train_tsv: ../datasets/dcase2021/dataset/metadata/train/synthetic21_train/soundscapes.tsv
+  synth_val_dur: ../datasets/dcase2021/dataset/metadata/validation/synthetic21_validation/durations.tsv
+  synth_val_folder: ../datasets/dcase2021/dataset/audio/validation/synthetic21_validation/soundscapes_16k/
+  synth_val_folder_44k: ../datasets/dcase2021/dataset/audio/validation/synthetic21_validation/soundscapes/
+  synth_val_folder_ft: ../datasets/dcase2021/dataset/audio/validation/synthetic21_validation/soundscapes_ft/
+  synth_val_tsv: ../datasets/dcase2021/dataset/metadata/validation/synthetic21_validation/soundscapes.tsv
+feature_original:
+  audio_max_len: 10
+  f_max: 8000
+  f_min: 0
+  frame_length: 2048
+  hop_length: 256
+  n_mels: 128
+  n_window: 2048
+  net_subsample: 4
+  sample_rate: 16000
+  smoothing: 0
+  sr: 16000
+generals:
+  codecarbon: false
+  ensemble: null
+  ensemble_dirs: &id001
+  - exps/ensemble_FDY/
+  ensemble_models: &id002
+  - DYCRNN_class
+  ensemble_train_dataaug: true
+  evaluate_above_avg: null
+  evaluation: false
+  feature: feature_original
+  n_ensemble_epochs: 1
+  pseudo_label: false
+  pseudo_label_choice: teacher
+  pseudo_labeling_type: soft
+  save_folder: exps/new_exp_gpu=0_iter=7
+  save_freq_pred: false
+  saveplot_test: false
+  saveplot_val: false
+  savepsds: false
+  synth_dataset: dataset_oldsynth
+  test_dataset: test
+  test_train: false
+  top_n: null
+  warn: false
+  weights_dir: weights
+opt:
+  lr: 0.001
+scaler:
+  dims:
+  - 0
+  - 2
+  normtype: minmax
+  savepath: ./scaler.ckpt
+  statistic: instance
+training:
+  add_whitenoise: false
+  afl_loss: null
+  audioset_strong: false
+  audioset_unlabel: false
+  aug_more: false
+  aug_more_epoch: 200
+  aug_more_param_name: filter_db_range
+  aug_more_param_value:
+  - -9
+  - 9
+  batch_size:
+  - 12
+  - 12
+  - 24
+  batch_size_val: 24
+  batch_size_val_10: 24
+  batch_size_val_300: 3
+  classwise_test: false
+  consistency_loss: MSE
+  custom_threshold: false
+  debug: false
+  decode_weakSED_class:
+  - 1
+  - 5
+  - 6
+  - 7
+  - 9
+  decode_weakSED_expand: 16
+  decode_weak_test: 1
+  decode_weak_valid: 0
+  div_dataset: false
+  div_ratio: 25
+  ema_factor: 0.999
+  ensemble_dirs: *id001
+  ensemble_models: *id002
+  eval_ebbers: false
+  eval_ebbers_valid: false
+  eval_ebbers_valid_PSDS: 0
+  eval_ebbers_weakmask: false
+  evaluate_above_avg: null
+  frame_shift: true
+  freq_preds: false
+  get_custom_threshold: false
+  get_pred_dist: false
+  medfilt_classwise: false
+  median_window: 7
+  mixup_rate: 1.0
+  mixup_type: soft
+  model: DYCRNN
+  model_selection: null
+  n_epochs: 200
+  n_epochs_warmup: 50
+  n_test_thresholds: 50
+  net_pooling: 4
+  num_workers: 14
+  output_temp: null
+  pseudo_label_choice: teacher
+  pseudo_labeling_type: soft
+  real_strong: false
+  seed: 42
+  self_atten: false
+  step_lrdecay: false
+  sum_val_metric: true
+  synth_strong_ratio: 1
+  temp_anneal: false
+  test_aug: false
+  test_folder: exps/230620exps/FDY+freqpred+FEtrainable/titanx1_gpu=0_iter=1
+  test_freq_mask_range:
+  - 96
+  - 128
+  test_freq_mask_ratio: 2
+  test_freqmask: false
+  test_only: false
+  testaug_n_shift: 2
+  testaug_original_weight: 0.25
+  time_mask_ratios:
+  - 5
+  - 20
+  time_masking: true
+  top_n: null
+  trainweak_only: false
+  trainweak_withstrong: false
+  transform:
+    choice:
+    - 1
+    - 0
+    - 0
+    filter_bands:
+    - 2
+    - 5
+    filter_db_range:
+    - -4.5
+    - 6
+    filter_type: step
+    freq_mask_ratio: 16
+    min_bw: 4
+    n_transform: 2
+    noise_snrs:
+    - 35
+    - 40
+  unlabel_extend: false
+  val_thresholds:
+  - 0.5
+  valid_aug: false
+  valid_transform:
+    choice:
+    - 1
+    - 0
+    - 0
+    filter_bands:
+    - 2
+    - 5
+    filter_db_range:
+    - -4.5
+    - 6
+    filter_type: step
+    freq_mask_ratio: 16
+    min_bw: 4
+    n_transform: 1
+    noise_snrs:
+    - 35
+    - 40
+  w_cons_max: 2
+  w_freqpred: 0
+  w_weak: 0.5
+  w_weak_cons: 1
+  weak_split: 0.9
+  weakf1_ratio: 1
+  whitenoise_snrs:
+  - 30
+  - 60
