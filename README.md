@@ -95,16 +95,6 @@ If this repository helped your works, please cite papers below! 3rd paper is abo
     pages = "136--140",
 }
 
-@inproceedings{Nam2023,
-    author = "Nam, Hyeonuk and Kim, Seong-Hu and Min, Deokki and Park, Yong-Hwa",
-    title = "Frequency \& Channel Attention for Computationally Efficient Sound Event Detection",
-    booktitle = "Proceedings of the 8th Detection and Classification of Acoustic Scenes and Events 2023 Workshop (DCASE2023)",
-    address = "Tampere, Finland",
-    month = "September",
-    year = "2023",
-    pages = "136--140",
-}
-
 @inproceedings{nam22_interspeech,
       author={Hyeonuk Nam and Seong-Hu Kim and Byeong-Yun Ko and Yong-Hwa Park},
       title={{Frequency Dynamic Convolution: Frequency-Adaptive Pattern Recognition for Sound Event Detection}},
