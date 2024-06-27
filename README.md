@@ -64,6 +64,13 @@ Trained model will be saved in `exps` folder.
 ## Citation & Contact
 If this repository helped your works, please cite papers below! 3rd paper is about data augmentation method called FilterAugment which is applied to this work.
 ```bib
+@article{nam2024dcase,
+      title={Self Training and Ensembling Frequency Dependent Networks with Coarse Prediction Pooling and Sound Event Bounding Boxes}, 
+      author={Hyeonuk Nam and Deokki Min and Seungdeok Choi and Inhan Choi and Yong-Hwa Park},
+      year={2024},
+      journal={arXiv preprint arXiv:2406.15725},
+}
+
 @article{nam2024pushing,
       title={Pushing the Limit of Sound Event Detection with Multi-Dilated Frequency Dynamic Convolution}, 
       author={Hyeonuk Nam and Yong-Hwa Park},
