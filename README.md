@@ -5,15 +5,54 @@ Official implementation of <br>
  - **Diversifying and Expanding Frequency-Adaptive Convolution Kernels for Sound Event Detection** (Accepted to INTERSPEECH2024) <br>
 by Hyeonuk Nam, Seong-Hu Kim, Deokki Min, Junhyeok Lee, Yong-Hwa Park <br>
 [![arXiv](https://img.shields.io/badge/arXiv-2406.05341-brightgreen)](https://arxiv.org/abs/2406.05341)<br>
-       - arXiv version has updates on some minor errors
  - **Pushing the Limit of Sound Event Detection with Multi-Dilated Frequency Dynamic Convolution** <br>
 by Hyeonuk Nam, Yong-Hwa Park <br>
 [![arXiv](https://img.shields.io/badge/arXiv-2406.13312-brightgreen)](https://arxiv.org/abs/2406.13312)<br>
+ - **Self Training and Ensembling Frequency Dependent Networks with Coarse Prediction Pooling and Sound Event Bounding Boxes** (DCASE2024 Challenge Task4 technical report) <br>
+by Hyeonuk Nam, Deokki Min, Seungdeok Choi, Inhan Choi, Yong-Hwa Park <br>
+[![arXiv](https://img.shields.io/badge/arXiv-2406.15725-brightgreen)](https://arxiv.org/abs/2406.15725)<br>
 
 
-**Will be updated soon!**
+## Requirements
+Python version of 3.7.10 is used with following libraries
+- pytorch==1.8.0
+- pytorch-lightning==1.2.4
+- pytorchaudio==0.8.0
+- scipy==1.4.1
+- pandas==1.1.3
+- numpy==1.19.2
 
 
+other requrements in [requirements.txt](./requirements.txt)
+
+
+## Datasets
+You can download datasets by reffering to [DCASE 2021 Task 4 description page](http://dcase.community/challenge2021/task-sound-event-detection-and-separation-in-domestic-environments) or [DCASE 2021 Task 4 baseline](https://github.com/DCASE-REPO/DESED_task). You need DESED real datasets (weak/unlabeled in domain/validation/public eval) and DESED synthetic datasets (train/validation).
+
+
+## Test with saved models
+You can test saved models by running:
+```shell
+python main.py
+```
+this example tests the best MDFD-CRNN model.
+
+To test DFD-CRNNs, run
+
+```shell
+python main.py -c ./configs/config_DFDbest_psds1.yaml
+```
+or
+```shell
+python main.py -c ./configs/config_DFDbest_psds2.yaml
+```
+
+## Training
+To train the model, you have to chage configs/config_*.yaml/training/test_only as False, and run:
+```shell
+python main.py
+```
+Trained model will be saved in `exps` folder.
 
 ## Reference
 - [DCASE 2021 Task 4 baseline](https://github.com/DCASE-REPO/DESED_task) <br>
@@ -25,6 +64,13 @@ by Hyeonuk Nam, Yong-Hwa Park <br>
 ## Citation & Contact
 If this repository helped your works, please cite papers below! 3rd paper is about data augmentation method called FilterAugment which is applied to this work.
 ```bib
+@article{nam2024dcase,
+      title={Self Training and Ensembling Frequency Dependent Networks with Coarse Prediction Pooling and Sound Event Bounding Boxes}, 
+      author={Hyeonuk Nam and Deokki Min and Seungdeok Choi and Inhan Choi and Yong-Hwa Park},
+      year={2024},
+      journal={arXiv preprint arXiv:2406.15725},
+}
+
 @article{nam2024pushing,
       title={Pushing the Limit of Sound Event Detection with Multi-Dilated Frequency Dynamic Convolution}, 
       author={Hyeonuk Nam and Yong-Hwa Park},
