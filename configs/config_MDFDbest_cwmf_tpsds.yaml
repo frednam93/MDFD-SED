@@ -15,7 +15,7 @@ training:
 
   debug: False                                            # debugging mode
   test_only: True                                         # run test with model saved in save_folder
-  test_folder: exps/DFDbest_psds1                         # test directory
+  test_folder: exps/MDFDbest                              # test directory
   classwise_test: False                                   # save classwise predictions
   div_dataset: False                                      # divide dataset size (used for debugging)
   div_ratio: 25                                           # ratio of dataset size to be reduced
@@ -26,7 +26,7 @@ training:
   n_test_thresholds: 50                                   # number of thresholds used to compute psds in test
   real_strong: False                                      # add real strongly labeled dataset on strongly labeled dataset
   synth_strong_ratio: 1
-  true_psds: False
+  true_psds: True
   save_score: False
 
   # validation metric
@@ -46,7 +46,7 @@ training:
   # post processings
   decode_weak_valid: 0
   decode_weak_test: 1                                     # 0: false, 1: true, 2: only use weak
-  median_window: 7                                        # length of median filter to smooth prediction (# frames)
+  median_window: [7,25,13,5,5,93,95,17,9,87]              # length of median filter to smooth prediction (# frames)
 
   # data augmentation
   frame_shift: True
@@ -93,20 +93,23 @@ DYCRNN:
   pad: [ 1, 1, 1, 1, 1, 1, 1 ]
   stride: [ 1, 1, 1, 1, 1, 1, 1 ]
   dilation: [ 1, 1, 1, 1, 1, 1, 1 ]
-  n_filt: [ 32, 64, 128, 256, 256, 256, 256 ]
+  n_filt: [ 44, 88, 176, 352, 352, 352, 352 ]
   pooling: [ [ 2, 2 ], [ 2, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ]
 
-  pre_conv:                                               # None for no application, 16 or 32
-  DY_layers: [ 0, 1, 1, 1, 1, 1, 1 ]                      # [ 0, 1, 1, 1, 1, 1, 1 ]
+  pre_conv: 16                                            # None for no application, 16 or 32
+  DY_layers: [ 1, 1, 1, 1, 1, 1, 1 ]                      # [ 0, 1, 1, 1, 1, 1, 1 ]
   n_basis_kernels: 4
   temperature: 45
   dy_reduction: 4
   pool_dim: 'time'                                        # TDY: "freq", FDY: "time", DY: "both"
   conv1d_kernel: [ 3, 1 ]
-  dilated_DY: [ 0, 1, 1, 1, 1, 1, 0 ]                     # [ 0, 1, 1, 1, 1, 1, 0 ]
-  dilation_size: [[ [1, 1], [1, 2], [1, 3], [1, 3] ],]       # [ [1, 1], [1, 2], [1, 3], [1, 3] ]
-  dy_chan_proportion:                                     # None if not use; [N, M] for N/M chans by DY
-  aggconv: False
+  dilated_DY: [ 1, 1, 1, 1, 1, 1, 0 ]                     # [ 0, 1, 1, 1, 1, 1, 0 ]
+  dilation_size: [[[1, 1], [1, 1], [1, 1], [1, 1]], [[1, 1], [1, 1], [1, 1], [1, 1]],
+                  [[1, 1], [1, 1], [1, 1], [1, 1]], [[1, 1], [1, 1], [1, 1], [1, 1]],
+                  [[1, 1], [1, 1], [1, 1], [1, 1]], [[1, 1], [1, 1], [1, 2], [1, 3]],
+                  [[1, 1], [1, 2], [1, 2], [1, 3]], [[1, 1], [1, 2], [1, 3], [1, 3]]]
+  dy_chan_proportion: [1, 11]                             # None if not use; [N, M] for N/M chans by DY
+  aggconv: True
 
 scaler:
   statistic: instance # instance or dataset-wide statistic

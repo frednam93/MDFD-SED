@@ -21,7 +21,8 @@ Python version of 3.7.10 is used with following libraries
 - scipy==1.4.1
 - pandas==1.1.3
 - numpy==1.19.2
-
+- sed_scores_eval
+- sebbs
 
 other requrements in [requirements.txt](./requirements.txt)
 
@@ -35,7 +36,17 @@ You can test saved models by running:
 ```shell
 python main.py
 ```
-this example tests the best MDFD-CRNN model.
+this example tests the best MDFD-CRNN model with class-wise median filter on truePSDS1.
+
+To test MDFD-CRNNs with cSEBBs, run
+
+```shell
+python main.py -c ./configs/config_MDFDbest_sebb.yaml
+```
+then run
+```shell
+python sebbeval.py
+```
 
 To test DFD-CRNNs, run
 
@@ -60,6 +71,7 @@ Trained model will be saved in `exps` folder.
 - [Temporal Dynamic CNN for text-independent speaker verification](https://https://github.com/shkim816/temporal_dynamic_cnn)
 - [Frequency Dynamic Convolution-Recurrent Neural Network (FDY-CRNN) for Sound Event Detection](https://github.com/frednam93/FDY-SED)
 - [Frequency & Channel Attention for Computationally Efficient Sound Event Detection](https://github.com/frednam93/lightSED)
+- [Sound Event Bounding Boxes](https://github.com/merlresearch/sebbs)
 
 ## Citation & Contact
 If this repository helped your works, please cite papers below! 3rd paper is about data augmentation method called FilterAugment which is applied to this work.

@@ -9,6 +9,9 @@ import shutil
 import matplotlib
 import numpy as np
 import pandas as ps
+import sed_scores_eval as sse
+from sed_scores_eval import intersection_based
+from sed_scores_eval.base_modules.scores import create_score_dataframe
 from time import time
 from datetime import datetime
 from tqdm import tqdm
@@ -271,8 +274,16 @@ def test(train_cfg):
     train_cfg["ema_net"].eval()
     test_tsv, test_dur = train_cfg["test_tsvs"]
     thresholds = np.arange(1 / (train_cfg["n_test_thresholds"] * 2), 1, 1 / train_cfg["n_test_thresholds"])
-    stud_test_psds_buffer = {k: pd.DataFrame() for k in thresholds}
-    tch_test_psds_buffer = {k: pd.DataFrame() for k in thresholds}
+    if train_cfg["save_score"]:
+        test_buffer_unprocessed = {}
+    elif not train_cfg["true_psds"]:
+        stud_test_psds_buffer = {k: pd.DataFrame() for k in thresholds}
+        tch_test_psds_buffer = {k: pd.DataFrame() for k in thresholds}
+    else:
+        stud_scores = {}
+        tch_scores = {}
+        timestamps = encoder._frame_to_time(np.arange(157))
+        event_classes = encoder.labels
     stud_test_f1_buffer = pd.DataFrame()
     tch_test_f1_buffer = pd.DataFrame()
     decode_kwargs = {"encoder": encoder, "median_filter": train_cfg["median_window"],
@@ -296,28 +307,83 @@ def test(train_cfg):
             tch_test_f1_buffer = tch_test_f1_buffer.append(tch_pred_df_halfpoint[0.5], ignore_index=True)
 
             # get PSDS
-            stud_pred_dfs = decode_pred_batch(strong_pred_stud, weak_pred_stud, paths,
-                                              thresholds=list(stud_test_psds_buffer.keys()), **decode_kwargs)
-            tch_pred_dfs = decode_pred_batch(strong_pred_tch, weak_pred_tch, paths,
-                                             thresholds=list(tch_test_psds_buffer.keys()), **decode_kwargs)
-            for th in stud_test_psds_buffer.keys():
-                stud_test_psds_buffer[th] = stud_test_psds_buffer[th].append(stud_pred_dfs[th], ignore_index=True)
-            for th in tch_test_psds_buffer.keys():
-                tch_test_psds_buffer[th] = tch_test_psds_buffer[th].append(tch_pred_dfs[th], ignore_index=True)
+
+            if train_cfg["save_score"]: #applied on teacher only
+                scores_raw = {}
+                for j in range(strong_pred_tch.shape[0]):
+                    audio_id = Path(filenames[j]).stem
+                    c_scores = strong_pred_tch[j]
+                    c_scores = c_scores.transpose(0, 1).detach().cpu().numpy()
+                    scores_raw[audio_id] = create_score_dataframe(
+                        scores=c_scores,
+                        timestamps=encoder._frame_to_time(np.arange(len(c_scores) + 1)),
+                        event_classes=encoder.labels,)
+                test_buffer_unprocessed.update(scores_raw)
+
+            elif not train_cfg["true_psds"]:
+                stud_pred_dfs = decode_pred_batch(strong_pred_stud, weak_pred_stud, paths,
+                                                  thresholds=list(stud_test_psds_buffer.keys()), **decode_kwargs)
+                tch_pred_dfs = decode_pred_batch(strong_pred_tch, weak_pred_tch, paths,
+                                                 thresholds=list(tch_test_psds_buffer.keys()), **decode_kwargs)
+                for th in stud_test_psds_buffer.keys():
+                    stud_test_psds_buffer[th] = stud_test_psds_buffer[th].append(stud_pred_dfs[th], ignore_index=True)
+                for th in tch_test_psds_buffer.keys():
+                    tch_test_psds_buffer[th] = tch_test_psds_buffer[th].append(tch_pred_dfs[th], ignore_index=True)
+            else:
+                if isinstance(train_cfg["median_window"], int):
+                    train_cfg["median_window"] = [train_cfg["median_window"]] * 10
+                for i, filename in enumerate(filenames):
+                    stud_pred = strong_pred_stud[i].transpose(0, 1).cpu().numpy()
+                    tch_pred = strong_pred_tch[i].transpose(0, 1).cpu().numpy()
+                    for class_idx in range(10):
+                        stud_pred[:, class_idx] = scipy.ndimage.filters.median_filter(stud_pred[:, class_idx],
+                                                                                      (train_cfg["median_window"][class_idx]))
+                        tch_pred[:, class_idx] = scipy.ndimage.filters.median_filter(tch_pred[:, class_idx],
+                                                                                     (train_cfg["median_window"][class_idx]))
+                    # weak masking
+                    stud_pred_weak = weak_pred_stud[i].cpu().numpy()
+                    tch_pred_weak = weak_pred_tch[i].cpu().numpy()
+                    for class_idx in range(10):
+                        stud_pred[:, class_idx][stud_pred[:, class_idx] > stud_pred_weak[class_idx]] = \
+                            stud_pred_weak[class_idx]
+                        tch_pred[:, class_idx][tch_pred[:, class_idx] > tch_pred_weak[class_idx]] = \
+                            tch_pred_weak[class_idx]
+
+                    filename = filename.replace('.wav', '')
+                    stud_scores[filename] = sse.utils.create_score_dataframe(stud_pred, timestamps, event_classes)
+                    tch_scores[filename] = sse.utils.create_score_dataframe(tch_pred, timestamps, event_classes)
 
 
     # calculate psds
-    psds1_kwargs = {"dtc_threshold": 0.7, "gtc_threshold": 0.7, "alpha_ct": 0, "alpha_st": 1}
-    psds2_kwargs = {"dtc_threshold": 0.1, "gtc_threshold": 0.1, "cttc_threshold": 0.3, "alpha_ct": 0.5,
-                    "alpha_st": 1}
-    stud_psds1 = compute_psds_from_operating_points(stud_test_psds_buffer, test_tsv, test_dur, save_dir=psds_folders[0],
-                                                    **psds1_kwargs)
-    stud_psds2 = compute_psds_from_operating_points(stud_test_psds_buffer, test_tsv, test_dur, save_dir=psds_folders[0],
-                                                    **psds2_kwargs)
-    tch_psds1 = compute_psds_from_operating_points(tch_test_psds_buffer, test_tsv, test_dur, save_dir=psds_folders[1],
-                                                   **psds1_kwargs)
-    tch_psds2 = compute_psds_from_operating_points(tch_test_psds_buffer, test_tsv, test_dur, save_dir=psds_folders[1],
-                                                   **psds2_kwargs)
+    if train_cfg["save_score"]:
+        save_dir_unprocessed = os.path.join(train_cfg["test_folder"], "unprocessed")
+        if not os.path.exists(save_dir_unprocessed):
+            os.makedirs(save_dir_unprocessed)
+        sse.io.write_sed_scores(test_buffer_unprocessed, save_dir_unprocessed)
+        stud_psds1, stud_psds2, stud_CB_f1, stud_IB_f1, tch_psds1, tch_psds2, tch_CB_f1, tch_IB_f1 = 0, 0, 0, 0, 0, 0, 0, 0,
+    elif not train_cfg["true_psds"]:
+        psds1_kwargs = {"dtc_threshold": 0.7, "gtc_threshold": 0.7, "alpha_ct": 0, "alpha_st": 1}
+        psds2_kwargs = {"dtc_threshold": 0.1, "gtc_threshold": 0.1, "cttc_threshold": 0.3, "alpha_ct": 0.5,
+                        "alpha_st": 1}
+        stud_psds1 = compute_psds_from_operating_points(stud_test_psds_buffer, test_tsv, test_dur,
+                                                        save_dir=psds_folders[0], **psds1_kwargs)
+        stud_psds2 = compute_psds_from_operating_points(stud_test_psds_buffer, test_tsv, test_dur,
+                                                        save_dir=psds_folders[0], **psds2_kwargs)
+        tch_psds1 = compute_psds_from_operating_points(tch_test_psds_buffer, test_tsv, test_dur,
+                                                       save_dir=psds_folders[1], **psds1_kwargs)
+        tch_psds2 = compute_psds_from_operating_points(tch_test_psds_buffer, test_tsv, test_dur,
+                                                       save_dir=psds_folders[1], **psds2_kwargs)
+    else:
+        psds1_kwargs_true = {"ground_truth": test_tsv, "audio_durations": test_dur, "dtc_threshold": 0.7,
+                             "gtc_threshold": 0.7, "alpha_ct": 0, "alpha_st": 1, "unit_of_time": 'hour', "max_efpr": 100.,
+                             "num_jobs": train_cfg["num_workers"]}
+        psds2_kwargs_true = {"ground_truth": test_tsv, "audio_durations": test_dur, "dtc_threshold": 0.1,
+                             "gtc_threshold": 0.1, "cttc_threshold": 0.3, "alpha_ct": 0.5, "alpha_st": 1,
+                             "unit_of_time": 'hour', "max_efpr": 100., "num_jobs": train_cfg["num_workers"]}
+        stud_psds1, _, _ = intersection_based.psds(scores=stud_scores, **psds1_kwargs_true)
+        stud_psds2, _, _ = intersection_based.psds(scores=stud_scores, **psds2_kwargs_true)
+        tch_psds1, _, _ = intersection_based.psds(scores=tch_scores, **psds1_kwargs_true)
+        tch_psds2, _, _ = intersection_based.psds(scores=tch_scores, **psds2_kwargs_true)
     stud_CB_f1, _, _, _ = log_sedeval_metrics(stud_test_f1_buffer, test_tsv, psds_folders[0])
     stud_IB_f1 = compute_per_intersection_macro_f1({"0.5": stud_test_f1_buffer}, test_tsv, test_dur)
     tch_CB_f1, _, _, _ = log_sedeval_metrics(tch_test_f1_buffer, test_tsv, psds_folders[1])
@@ -327,7 +393,7 @@ def test(train_cfg):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="gpu_selection")
-    parser.add_argument('-c', '--config', default="./configs/config_MDFDbest.yaml", type=str)
+    parser.add_argument('-c', '--config', default="./configs/config_MDFDbest_cwmf_tpsds.yaml", type=str)
     parser.add_argument('-g', '--gpu', default=0, type=int)
     parser.add_argument('-m', '--multigpu', default=False, type=bool)
     parser.add_argument('-r', '--repeat', default=2, type=int)

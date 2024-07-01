@@ -46,7 +46,7 @@ training:
   # post processings
   decode_weak_valid: 0
   decode_weak_test: 1                                     # 0: false, 1: true, 2: only use weak
-  median_window: 7                                        # length of median filter to smooth prediction (# frames)
+  median_window: [7,27,11,5,7,87,69,19,9,55]              # length of median filter to smooth prediction (# frames)
 
   # data augmentation
   frame_shift: True
