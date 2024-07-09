@@ -8,9 +8,10 @@ by Hyeonuk Nam, Seong-Hu Kim, Deokki Min, Junhyeok Lee, Yong-Hwa Park <br>
  - **Pushing the Limit of Sound Event Detection with Multi-Dilated Frequency Dynamic Convolution** <br>
 by Hyeonuk Nam, Yong-Hwa Park <br>
 [![arXiv](https://img.shields.io/badge/arXiv-2406.13312-brightgreen)](https://arxiv.org/abs/2406.13312)<br>
- - **Self Training and Ensembling Frequency Dependent Networks with Coarse Prediction Pooling and Sound Event Bounding Boxes** (DCASE2024 Challenge Task4 technical report) <br>
+ - **Self Training and Ensembling Frequency Dependent Networks with Coarse Prediction Pooling and Sound Event Bounding Boxes** (DCASE2024 Challenge Task4 technical report, **2nd rank**) <br>
 by Hyeonuk Nam, Deokki Min, Seungdeok Choi, Inhan Choi, Yong-Hwa Park <br>
-[![arXiv](https://img.shields.io/badge/arXiv-2406.15725-brightgreen)](https://arxiv.org/abs/2406.15725)<br>
+[![arXiv](https://img.shields.io/badge/arXiv-2406.15725-brightgreen)](https://arxiv.org/abs/2406.15725)
+[![DCASE](https://img.shields.io/badge/DCASE-techreport-orange)](https://dcase.community/documents/challenge2024/technical_reports/DCASE2024_Nam_38_t4.pdf)<br>
 
 
 ## Requirements
