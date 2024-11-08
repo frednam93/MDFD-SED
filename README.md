@@ -59,6 +59,12 @@ or
 python main.py -c ./configs/config_DFDbest_psds2.yaml
 ```
 
+To test PFD-CRNNs, run
+
+```shell
+python main.py -c ./configs/config_PFDbest.yaml
+```
+
 ## Training
 To train the model, you have to chage configs/config_*.yaml/training/test_only as False, and run:
 ```shell
